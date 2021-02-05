@@ -31,8 +31,8 @@ Description
 \*---------------------------------------------------------------------------*/
 
 #include "fvCFD.H"
-#include "blockMesh.H"
 #include "MeshedSurfaces.H"
+#include "dynamicFvMesh.H"
 //#include "scalar.H"
 //#include "scalarList.H"
 
@@ -52,19 +52,19 @@ int main(int argc, char *argv[])
     fileName surfFileName(args["surface"]);
     meshedSurface surf(surfFileName);
     surf.writeStats(Info);
-    pointField cornerPts(boundBox(surf.points(), false).points());
-    cornerPts.writeEntry("cornerPts", Info);
-
-    // move last four points to a new height
-    scalar H = 200; 
-    cornerPts.replace(direction(2), 
-                      List<scalar>{1,1,1,1,H,H,H,H});
-    cornerPts.writeEntry("cornerPts", Info);
+    //pointField cornerPts(boundBox(surf.points(), false).points());
+    //cornerPts.writeEntry("cornerPts", Info);
 
     // Load into polyMesh for OpenFOAM-compliant data handling
-    #include "createMesh.H"
+    #include "createNamedDynamicFvMesh.H"
+    Info <<  "mesh.points().size() = " <<  mesh.points().size() << endl;
+    Info <<  "Is mesh dynamic? " << mesh.dynamic() << endl; 
+    const polyBoundaryMesh& pbm = mesh.boundaryMesh();
+    Info << "patch names: " << pbm.names() << endl;
+    const polyPatch& groundPatch = pbm["ground"];
+    Info << "current available patch: " << groundPatch.name() << endl;
+    Info << "gournd.localPoints().size() " << groundPatch.localPoints().size() <<endl;
 
-    Info<< "End\n" << endl;
 
     return 0;
 }
