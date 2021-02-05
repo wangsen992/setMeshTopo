@@ -31,19 +31,30 @@ Description
 \*---------------------------------------------------------------------------*/
 
 #include "fvCFD.H"
-#include "blockMesh"
+#include "blockMesh.H"
+#include "MeshedSurfaces.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 int main(int argc, char *argv[])
 {
-    #include "addRegionOption.H"
+
+    #include "createArgList.H"
     #include "setRootCase.H"
     #include "createTime.H"
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+    // load surf files
+    fileName surfFileName(args["surface"]);
+    meshedSurface surf(surfFileName);
+    surf.writeStats(Info);
 
-    Info<< nl;
+
+    // Note typically with a bottom topography, only height needs to be 
+    // defined for the domain
+    #include "createBlockMesh.H"
+
+    
     runTime.printExecutionTime(Info);
 
     Info<< "End\n" << endl;

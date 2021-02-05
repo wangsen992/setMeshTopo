@@ -1,0 +1,11 @@
+gcc
+-std=c++11
+-I${FOAM_SRC}/mesh/blockMesh/lnInclude 
+-I${FOAM_SRC}/fileFormats/lnInclude 
+-I${FOAM_SRC}/meshTools/lnInclude 
+-I${FOAM_SRC}/dynamicMesh/lnInclude
+-lblockMesh 
+-lfileFormats 
+-lmeshTools 
+-ldynamicMesh
+                                
