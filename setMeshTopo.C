@@ -62,8 +62,14 @@ int main(int argc, char *argv[])
     const polyBoundaryMesh& pbm = mesh.boundaryMesh();
     Info << "patch names: " << pbm.names() << endl;
     const polyPatch& groundPatch = pbm["ground"];
+
+    pointField p0 = groundPatch.localPoints(); // load blockMesh bottom points
     Info << "current available patch: " << groundPatch.name() << endl;
-    Info << "gournd.localPoints().size() " << groundPatch.localPoints().size() <<endl;
+    Info << "p0.size() " << p0.size() <<endl;
+    boundBox bbox(p0);
+    Info << "boundBox.min(): " << bbox.min() << endl;
+    Info << "p0[10].x(): " << p0[10].x() << endl;
+
 
 
     return 0;
